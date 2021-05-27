@@ -1,7 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-export const TodoItem = ({data,onToggle,onRemove}) => {
-    const {id,value,done} = data
+import { toggleTodo, removeTodo } from "../redux/actions";
+
+
+ const TodoItem = ({ data, toggleTodo, removeTodo }) => {
+    const { id, value, done } = data
+    
     return (
         <div className="todo-list-item" key={id}>
         {done ? (
@@ -12,14 +17,21 @@ export const TodoItem = ({data,onToggle,onRemove}) => {
 
         <span
           className={`item-text	 ${done ? "done" : ""}`}
-          onClick={() => onToggle(id)}
+          onClick={() => toggleTodo(id)}
         >
           {value}{" "}
         </span>
 
-        <button className="btn ml-auto" onClick={() => onRemove(id)}>
+        <button className="btn ml-auto" onClick={() => removeTodo(id)}>
           x
         </button>
       </div>
     )
 }
+
+const mapDispatchToProps = {
+    toggleTodo,
+    removeTodo
+}
+
+export default connect(null, mapDispatchToProps)(TodoItem)

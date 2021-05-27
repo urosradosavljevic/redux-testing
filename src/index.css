@@ -19,5 +19,5 @@
 }
 
 .input {
-  @apply rounded-xl w-4/6 h-10 m-2;
+  @apply rounded-xl w-4/6 h-10 m-2 p-2;
 }

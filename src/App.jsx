@@ -1,46 +1,24 @@
 import { useState } from "react";
-import { TodoItem } from "./components/TodoItem";
+import { connect } from "react-redux";
 
-const App = () => {
+import TodoItem from "./components/TodoItem";
+import { addTodo } from "./redux/actions";
+
+const App = ({todos,addTodo}) => {
   const [inputValue, setInputValue] = useState("");
 
-  const [todos, setTodos] = useState([
-    { id: 0, value: "Take the dog out", done: false },
-    { id: 1, value: "Get groseries", done: true },
-  ]);
+  const onAdd = () => {
+    if(inputValue !== ""){
+      addTodo(inputValue)
+      setInputValue("")
+    }
+  }
 
-  const onAdd = () =>
-    inputValue !== "" &&
-    setTodos((old) => [
-      ...old,
-      {
-        id: Math.max(...old.map((i) => i.id)) + 1,
-        value: inputValue,
-        done: false,
-      },
-    ]);
-
-  const toggleTodo = (id) => {
-    setTodos((old) =>
-      old.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            done: !item.done,
-          };
-        }
-        return item;
-      })
-    );
-  };
-  
   const sortTodos = todos => todos.sort((a,b)=>{
     if(a.done && !b.done) return 1
     if(!a.done && b.done) return -1
     return 0
   })
-
-  const removeTodo = (id) => setTodos((old) => old.filter((i) => id !== i.id));
 
   return (
     <div className="container mx-auto mt-10">
@@ -60,12 +38,20 @@ const App = () => {
 
         <hr className="py-2 my-2" />
 
-        {sortTodos(todos).map((t) => (
-          <TodoItem data={t} onToggle={toggleTodo} onRemove={removeTodo} />
+        {todos?.length > 0 && sortTodos(todos).map((t) => (
+          <TodoItem data={t} />
         ))}
       </div>
     </div>
   );
 };
 
-export default App;
+const mapStateToProps = ({todos}) => {
+  return {todos}
+}
+
+const mapDispatchToProps = {
+  addTodo
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
