@@ -22,7 +22,6 @@ export const todosFetched = (todos) => ({
   data: { todos },
 });
 
-export const showLoading = (message) => ({
+export const showLoading = () => ({
   type: "SHOW_LOADING",
-  message,
 });
