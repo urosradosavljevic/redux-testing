@@ -1,12 +1,17 @@
 const initState = {
-  todos: [
-    { id: 0, value: "Take the dog out", done: false },
-    { id: 1, value: "Get groseries", done: true },
-  ],
+  loading: false,
+  todos: [],
 };
 
 const todoReducer = (state = initState, action) => {
   switch (action.type) {
+    case "TODOS_FETCHED":
+      return {
+        ...state,
+        todos: [...state.todos, ...action.data.todos],
+        loading: false,
+      };
+
     case "ADD_TODO":
       return {
         ...state,
@@ -14,8 +19,8 @@ const todoReducer = (state = initState, action) => {
           ...state.todos,
           {
             id: Math.max(...state.todos.map((i) => i.id)) + 1,
-            value: action.data.value,
-            done: false,
+            title: action.data.title,
+            completed: false,
           },
         ],
       };
@@ -27,20 +32,23 @@ const todoReducer = (state = initState, action) => {
           if (item.id === action.data.id) {
             return {
               ...item,
-              done: !item.done,
+              completed: !item.completed,
             };
           }
           return item;
         }),
       };
 
+    case "SHOW_LOADING":
+      return {
+        ...state,
+        loading: true,
+      };
+
     case "REMOVE_TODO":
       return {
         ...state,
-        todos:
-          state.todos.length === 1
-            ? []
-            : state.todos.filter((i) => action.data.id !== i.id),
+        todos: state.todos.filter((i) => action.data.id !== i.id),
       };
 
     default:

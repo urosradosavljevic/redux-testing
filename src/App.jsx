@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import TodoItem from "./components/TodoItem";
-import { addTodo } from "./redux/actions";
+import { addTodo, fetchTodos } from "./redux/actions";
 
-const App = ({todos,addTodo}) => {
+const sortTodos = todos => todos.sort((a,b)=>{
+  if(a.completed && !b.completed) return 1
+  if(!a.completed && b.completed) return -1
+  return 0
+})
+
+const App = ({loading,todos,addTodo,fetchTodos}) => {
   const [inputValue, setInputValue] = useState("");
 
   const onAdd = () => {
@@ -14,11 +20,10 @@ const App = ({todos,addTodo}) => {
     }
   }
 
-  const sortTodos = todos => todos.sort((a,b)=>{
-    if(a.done && !b.done) return 1
-    if(!a.done && b.done) return -1
-    return 0
-  })
+  useEffect(() => {
+    fetchTodos()
+  },[fetchTodos])
+
 
   return (
     <div className="container mx-auto mt-10">
@@ -38,20 +43,20 @@ const App = ({todos,addTodo}) => {
 
         <hr className="py-2 my-2" />
 
-        {todos?.length > 0 && sortTodos(todos).map((t) => (
-          <TodoItem data={t} />
+        {loading ? "loading.." : todos?.length > 0 && sortTodos(todos).map((t) => (
+          <TodoItem key={t.id} data={t} />
         ))}
       </div>
     </div>
   );
 };
 
-const mapStateToProps = ({todos}) => {
-  return {todos}
+const mapStateToProps = ({todos,loading}) => {
+  return {todos,loading}
 }
 
 const mapDispatchToProps = {
-  addTodo
+  addTodo,fetchTodos
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

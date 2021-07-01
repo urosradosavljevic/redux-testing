@@ -1,6 +1,6 @@
-export const addTodo = (value) => ({
+export const addTodo = (title) => ({
   type: "ADD_TODO",
-  data: { value },
+  data: { title },
 });
 
 export const toggleTodo = (id) => ({
@@ -11,4 +11,18 @@ export const toggleTodo = (id) => ({
 export const removeTodo = (id) => ({
   type: "REMOVE_TODO",
   data: { id },
+});
+
+export const fetchTodos = () => ({
+  type: "FETCH_TODOS",
+});
+
+export const todosFetched = (todos) => ({
+  type: "TODOS_FETCHED",
+  data: { todos },
+});
+
+export const showLoading = (message) => ({
+  type: "SHOW_LOADING",
+  message,
 });

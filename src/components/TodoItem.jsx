@@ -5,21 +5,21 @@ import { toggleTodo, removeTodo } from "../redux/actions";
 
 
  const TodoItem = ({ data, toggleTodo, removeTodo }) => {
-    const { id, value, done } = data
+    const { id, title, completed } = data
     
     return (
         <div className="todo-list-item" key={id}>
-        {done ? (
+        {completed ? (
           <span className="flex justify-center w-8">✓</span>
         ) : (
           <span className="w-8" />
         )}
 
         <span
-          className={`item-text	 ${done ? "done" : ""}`}
+          className={`item-text	 ${completed ? "done" : ""}`}
           onClick={() => toggleTodo(id)}
         >
-          {value}{" "}
+          {title}
         </span>
 
         <button className="btn ml-auto" onClick={() => removeTodo(id)}>

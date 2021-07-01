@@ -1,12 +1,22 @@
-import { createStore, compose } from "redux";
+import { createStore, compose, applyMiddleware } from "redux";
+import createSagaMiddleware from "redux-saga";
 
 import reducers from "../reducers";
+import todosSaga from "../sagas/todos";
+
+const sagaMiddleware = createSagaMiddleware();
 
 const configureStore = (preloadedState) => {
   const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-  const store = createStore(reducers, preloadedState, composeEnhancers());
+  const store = createStore(
+    reducers,
+    preloadedState,
+    composeEnhancers(applyMiddleware(sagaMiddleware))
+  );
+
+  sagaMiddleware.run(todosSaga);
 
   // https://redux.js.org/recipes/configuring-your-store#hot-reloading
   if (module.hot) {
