@@ -2,7 +2,7 @@ import { all, takeEvery, put, fork, call } from "redux-saga/effects";
 import axios from "axios";
 import { todosFetched, showLoading } from "../actions";
 
-const routes = {
+export const routes = {
   GET_TODOS: "https://jsonplaceholder.typicode.com/todos",
 };
 
