@@ -6,7 +6,7 @@ import { createRandomTodos } from "../../helpers/test";
 
 jest.mock("axios");
 
-describe("Reducers", () => {
+describe("Sagas", () => {
   it("should test makeFetchTodosRequest saga", async () => {
     const randomTodos = createRandomTodos();
 
